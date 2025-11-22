@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Fullscreen Trigger</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #eee;
+      font-family: system-ui, sans-serif;
+      user-select: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div>Click or press any key to enter fullscreen</div>
+
+  <script>
+    const goFullscreen = async () => {
+      try {
+        const el = document.documentElement;
+
+        if (el.requestFullscreen) {
+          await el.requestFullscreen();
+        } else if (el.webkitRequestFullscreen) {
+          await el.webkitRequestFullscreen();
+        }
+
+        // switch to a completely black screen
+        document.body.style.background = "#000";
+        document.body.innerHTML = "";
+        document.body.style.cursor = "none";
+      } catch (err) {
+        console.log("Fullscreen request failed:", err);
+      }
+    };
+
+    // trigger on any mouse click
+    document.addEventListener("click", goFullscreen, { once: true });
+
+    // trigger on any key press except ESC
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") {
+        goFullscreen();
+      }
+    }, { once: true });
+  </script>
+
+</body>
+</html>
