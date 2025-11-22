@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Square Animation</title>
+<title>你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好</title>
 <style>
   html, body {
     margin: 0;
@@ -25,8 +25,8 @@
   }
   .square {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: 200px;
+    height: 200px;
     transition: background 0.2s;
   }
 </style>
@@ -36,7 +36,7 @@
 <div id="text">点击此处测试此程序!</div>
 
 <script>
-const squareSize = 50;
+const squareSize = 200;
 let squares = [];
 let flashColor = true;
 const originalBG = "#111";
@@ -112,8 +112,8 @@ function startAutoDuplication() {
 function duplicateSquares() {
   const current = [...squares];
   current.forEach(sq => {
-    const offsetX = (Math.random() - 0.5) * 30;
-    const offsetY = (Math.random() - 0.5) * 30;
+    const offsetX = (Math.random() - 0.5) * 60;
+    const offsetY = (Math.random() - 0.5) * 60;
     const newSq = new Square(sq.x + offsetX, sq.y + offsetY);
     squares.push(newSq);
   });
@@ -128,7 +128,8 @@ function startSquares() {
   squares.forEach(sq => sq.remove());
   squares = [];
   
-  for (let i = 0; i < 5; i++) {
+  // Create 100 squares instead of 5
+  for (let i = 0; i < 100; i++) {
     squares.push(new Square());
   }
   
@@ -226,6 +227,5 @@ document.addEventListener('click', clickHandler);
 document.addEventListener('keydown', keyHandler);
 
 </script>
-
 </body>
 </html>
