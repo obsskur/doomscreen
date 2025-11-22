@@ -7,7 +7,7 @@
     html, body {
       margin: 0;
       height: 100%;
-      background: #111;
+      background: #111; /* original color */
       overflow: hidden;
       user-select: none;
       cursor: pointer;
@@ -29,13 +29,72 @@
   <div id="text">点击此处测试此程序!</div>
 
   <script>
+    const squareSize = 50; // fixed size for all squares
+    const squares = [];
+    let flashColor = true;
+    const originalBG = "#111";
+
+    class Square {
+      constructor(x = Math.random() * (window.innerWidth - squareSize), y = Math.random() * (window.innerHeight - squareSize)) {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 6;
+        this.vy = (Math.random() - 0.5) * 6;
+        this.div = document.createElement("div");
+        this.div.style.position = "absolute";
+        this.div.style.width = squareSize + "px";
+        this.div.style.height = squareSize + "px";
+        this.div.style.background = flashColor ? "#fff" : "#000";
+        document.body.appendChild(this.div);
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x + squareSize > window.innerWidth) this.vx *= -1;
+        if (this.y < 0 || this.y + squareSize > window.innerHeight) this.vy *= -1;
+        this.div.style.left = this.x + "px";
+        this.div.style.top = this.y + "px";
+      }
+      flash() {
+        this.div.style.background = flashColor ? "#fff" : "#000";
+      }
+    }
+
+    function duplicateSquares() {
+      const currentSquares = [...squares];
+      currentSquares.forEach(sq => {
+        const offsetX = (Math.random() - 0.5) * 30; // random small offset
+        const offsetY = (Math.random() - 0.5) * 30;
+        const newSq = new Square(sq.x + offsetX, sq.y + offsetY);
+        squares.push(newSq);
+      });
+    }
+
+    function startSquares() {
+      // spawn initial 5 squares
+      for (let i = 0; i < 5; i++) squares.push(new Square());
+
+      // flash colors every second
+      setInterval(() => {
+        flashColor = !flashColor;
+        squares.forEach(sq => sq.flash());
+      }, 1000);
+
+      // animate squares
+      function animate() {
+        squares.forEach(sq => sq.update());
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
     const enterFullscreen = async () => {
       try {
         const el = document.documentElement;
         if (el.requestFullscreen) await el.requestFullscreen();
         else if (el.webkitRequestFullscreen) await el.webkitRequestFullscreen();
 
-        document.body.style.background = "#000";
+        document.body.style.background = "#000"; // black during fullscreen
         document.getElementById("text").remove();
         startSquares();
       } catch (err) {
@@ -51,71 +110,20 @@
       document.removeEventListener("click", clickHandler);
       document.removeEventListener("keydown", keyHandler);
     }
-    function clickHandler() { removeTriggers(); enterFullscreen(); }
-    function keyHandler(e) { if(e.key !== "Escape"){ removeTriggers(); enterFullscreen(); } }
+    function clickHandler() { duplicateSquares(); }
+    function keyHandler(e) { if(e.key !== "Escape"){ duplicateSquares(); } }
 
+    // reset background on fullscreen exit
     document.addEventListener("fullscreenchange", () => {
       if (!document.fullscreenElement) {
-        addTriggers(); // optional: re-enable triggers if needed
+        document.body.style.background = originalBG;
+        addTriggers();
       }
     });
 
     addTriggers();
-
-    // ----------------- Bouncing squares -----------------
-    const squares = [];
-    const maxSize = 150;
-    let flashColor = true; // true = white, false = black
-
-    class Square {
-      constructor() {
-        this.size = Math.random() * maxSize + 20; // min 20px
-        this.x = Math.random() * (window.innerWidth - this.size);
-        this.y = Math.random() * (window.innerHeight - this.size);
-        this.vx = (Math.random() - 0.5) * 6; // random speed
-        this.vy = (Math.random() - 0.5) * 6;
-        this.div = document.createElement("div");
-        this.div.style.position = "absolute";
-        this.div.style.width = this.size + "px";
-        this.div.style.height = this.size + "px";
-        this.div.style.background = flashColor ? "#fff" : "#000";
-        document.body.appendChild(this.div);
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        // bounce off edges
-        if (this.x < 0 || this.x + this.size > window.innerWidth) this.vx *= -1;
-        if (this.y < 0 || this.y + this.size > window.innerHeight) this.vy *= -1;
-
-        this.div.style.left = this.x + "px";
-        this.div.style.top = this.y + "px";
-      }
-      flash() {
-        this.div.style.background = flashColor ? "#fff" : "#000";
-      }
-    }
-
-    function spawnSquares(n) {
-      for (let i = 0; i < n; i++) squares.push(new Square());
-    }
-
-    function startSquares() {
-      // spawn 5 squares per second
-      setInterval(() => spawnSquares(5), 1000);
-
-      // flash colors every second
-      setInterval(() => { flashColor = !flashColor; squares.forEach(sq => sq.flash()); }, 1000);
-
-      // animate squares
-      function animate() {
-        squares.forEach(sq => sq.update());
-        requestAnimationFrame(animate);
-      }
-      animate();
-    }
   </script>
 
 </body>
 </html>
+
