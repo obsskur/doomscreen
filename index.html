@@ -20,10 +20,10 @@
 </head>
 <body>
 
-  <div>点击此处测试此程序!</div>
+  <div id="text">点击此处测试此程序!</div>
 
   <script>
-    const goFullscreen = async () => {
+    const enterFullscreen = async () => {
       try {
         const el = document.documentElement;
 
@@ -33,7 +33,6 @@
           await el.webkitRequestFullscreen();
         }
 
-        // switch to a completely black screen
         document.body.style.background = "#000";
         document.body.innerHTML = "";
         document.body.style.cursor = "none";
@@ -42,15 +41,40 @@
       }
     };
 
-    // trigger on any mouse click
-    document.addEventListener("click", goFullscreen, { once: true });
+    function addTriggers() {
+      document.addEventListener("click", clickHandler);
+      document.addEventListener("keydown", keyHandler);
+    }
 
-    // trigger on any key press except ESC
-    document.addEventListener("keydown", (e) => {
+    function removeTriggers() {
+      document.removeEventListener("click", clickHandler);
+      document.removeEventListener("keydown", keyHandler);
+    }
+
+    function clickHandler() {
+      removeTriggers();
+      enterFullscreen();
+    }
+
+    function keyHandler(e) {
       if (e.key !== "Escape") {
-        goFullscreen();
+        removeTriggers();
+        enterFullscreen();
       }
-    }, { once: true });
+    }
+
+    // When fullscreen exits, rebuild the page + re-enable triggers
+    document.addEventListener("fullscreenchange", () => {
+      if (!document.fullscreenElement) {
+        document.body.style.background = "#111";
+        document.body.innerHTML = '<div id="text">点击此处测试此程序!</div>';
+        document.body.style.cursor = "pointer";
+        addTriggers();
+      }
+    });
+
+    // initial setup
+    addTriggers();
   </script>
 
 </body>
