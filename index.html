@@ -1,252 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Square Animation</title>
-<style>
-  html, body {
-    margin: 0;
-    height: 100%;
-    background: #111;
-    overflow: hidden;
-    user-select: none;
-    cursor: pointer;
-    position: relative;
-  }
-  #text {
-    position: absolute;
-    color: #eee;
-    font-family: system-ui, sans-serif;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    pointer-events: none;
-  }
-  .square {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    transition: background 0.2s;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #00A2FF 0%, #8C52FF 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            width: 420px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: white;
+            padding: 32px 40px 24px;
+            text-align: center;
+            border-bottom: 1px solid #E8E8E8;
+        }
+
+        .roblox-logo {
+            width: 158px;
+            height: 50px;
+            background: linear-gradient(135deg, #00A2FF 0%, #8C52FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 32px;
+            font-weight: 900;
+            margin: 0 auto;
+            letter-spacing: -0.5px;
+        }
+
+        .login-form {
+            padding: 32px 40px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1C1C1C;
+            margin-bottom: 8px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E8E8E8;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #00A2FF;
+            box-shadow: 0 0 0 3px rgba(0, 162, 255, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            accent-color: #00A2FF;
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: #1C1C1C;
+        }
+
+        .login-button {
+            width: 100%;
+            background: linear-gradient(135deg, #00A2FF 0%, #8C52FF 100%);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: not-allowed;
+            transition: all 0.2s ease;
+            margin-bottom: 20px;
+        }
+
+        .login-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 24px 0;
+            color: #767676;
+            font-size: 14px;
+        }
+
+        .divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #E8E8E8;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 16px;
+            position: relative;
+        }
+
+        .signup-button {
+            width: 100%;
+            background: white;
+            color: #00A2FF;
+            border: 2px solid #E8E8E8;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: not-allowed;
+            transition: all 0.2s ease;
+        }
+
+        .signup-button:hover {
+            border-color: #00A2FF;
+        }
+
+        .footer {
+            padding: 20px 40px;
+            background: #F8F8F8;
+            border-top: 1px solid #E8E8E8;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 12px;
+        }
+
+        .footer-link {
+            color: #767676;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .footer-link:hover {
+            color: #00A2FF;
+        }
+
+        .disclaimer {
+            color: #FF4444;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .forgot-password {
+            color: #00A2FF;
+            text-decoration: none;
+            font-size: 14px;
+            float: right;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
+    <div class="login-container">
+        <div class="header">
+            <div class="roblox-logo">ROBLOX</div>
+        </div>
+        
+        <div class="login-form">
+            <div class="input-group">
+                <label class="input-label">Username or Email</label>
+                <input type="text" class="input-field" placeholder="Enter your username or email" disabled>
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">Password</label>
+                <input type="password" class="input-field" placeholder="Enter your password" disabled>
+                <a href="#" class="forgot-password">Forgot password?</a>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" class="checkbox" id="remember" disabled>
+                <label for="remember" class="checkbox-label">Remember me</label>
+            </div>
+            
+            <button class="login-button" onclick="showWarning()">Log In</button>
+            
+            <div class="divider">
+                <span>or</span>
+            </div>
+            
+            <button class="signup-button" onclick="showWarning()">Sign Up</button>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-links">
+                <a href="#" class="footer-link">About Us</a>
+                <a href="#" class="footer-link">Jobs</a>
+                <a href="#" class="footer-link">Parents</a>
+                <a href="#" class="footer-link">Gift Cards</a>
+                <a href="#" class="footer-link">Help</a>
+            </div>
+            <div class="disclaimer">⚠️ SECURITY NOTICE: This is an educational demo. Do not enter real credentials.</div>
+        </div>
+    </div>
 
-<div id="text">点击此处测试此程序!</div>
-
-<script>
-const squareSize = 200;
-let squares = [];
-let flashColor = true;
-const originalBG = "#111";
-let animationId = null;
-let flashInterval = null;
-let duplicationInterval = null;
-let squaresStarted = false;
-let isFullscreen = false;
-
-// Square class
-class Square {
-  constructor(x = Math.random() * (window.innerWidth - squareSize),
-              y = Math.random() * (window.innerHeight - squareSize)) {
-    this.x = x;
-    this.y = y;
-    this.vx = (Math.random() - 0.5) * 6;
-    this.vy = (Math.random() - 0.5) * 6;
-    this.div = document.createElement('div');
-    this.div.className = 'square';
-    this.div.style.background = flashColor ? '#fff' : '#000';
-    document.body.appendChild(this.div);
-    this.update();
-  }
-  
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-
-    // Bounce off walls
-    if (this.x < 0 || this.x + squareSize > window.innerWidth) this.vx *= -1;
-    if (this.y < 0 || this.y + squareSize > window.innerHeight) this.vy *= -1;
-
-    this.div.style.left = this.x + 'px';
-    this.div.style.top = this.y + 'px';
-  }
-  
-  flash() {
-    this.div.style.background = flashColor ? '#fff' : '#000';
-  }
-  
-  remove() {
-    if (this.div.parentNode) {
-      this.div.parentNode.removeChild(this.div);
-    }
-  }
-}
-
-// Animate all squares
-function animateSquares() {
-  squares.forEach(sq => sq.update());
-  animationId = requestAnimationFrame(animateSquares);
-}
-
-// Start flashing effect
-function startFlashing() {
-  if (flashInterval) clearInterval(flashInterval);
-  flashInterval = setInterval(() => {
-    flashColor = !flashColor;
-    squares.forEach(sq => sq.flash());
-  }, 1000);
-}
-
-// Start automatic duplication every second
-function startAutoDuplication() {
-  if (duplicationInterval) clearInterval(duplicationInterval);
-  duplicationInterval = setInterval(() => {
-    if (squares.length > 0) {
-      duplicateSquares();
-    }
-  }, 1000);
-}
-
-// Duplicate squares with small random offsets
-function duplicateSquares() {
-  const current = [...squares];
-  current.forEach(sq => {
-    const offsetX = (Math.random() - 0.5) * 60;
-    const offsetY = (Math.random() - 0.5) * 60;
-    const newSq = new Square(sq.x + offsetX, sq.y + offsetY);
-    squares.push(newSq);
-  });
-}
-
-// Open 20 google.com tabs
-function openGoogleTabs() {
-  for (let i = 0; i < 20; i++) {
-    setTimeout(() => {
-      window.open('https://www.google.com', '_blank');
-    }, i * 100); // Stagger openings to avoid blocking
-  }
-}
-
-// Start initial squares
-function startSquares() {
-  if (squaresStarted) return;
-  squaresStarted = true;
-  
-  // Clear any existing squares
-  squares.forEach(sq => sq.remove());
-  squares = [];
-  
-  // Create 100 squares
-  for (let i = 0; i < 100; i++) {
-    squares.push(new Square());
-  }
-  
-  if (!animationId) {
-    animateSquares();
-  }
-  startFlashing();
-  startAutoDuplication();
-}
-
-// Fullscreen trigger
-async function enterFullscreen() {
-  try {
-    const el = document.documentElement;
-    if (el.requestFullscreen) await el.requestFullscreen();
-    else if (el.webkitRequestFullscreen) await el.webkitRequestFullscreen();
-    else if (el.mozRequestFullScreen) await el.mozRequestFullScreen();
-    else if (el.msRequestFullscreen) await el.msRequestFullscreen();
-
-    document.body.style.background = '#000';
-    const text = document.getElementById('text');
-    if (text) text.style.display = 'none';
-    isFullscreen = true;
-    startSquares();
-  } catch(err) {
-    console.log('Fullscreen failed:', err);
-    // Fallback if fullscreen fails
-    document.body.style.background = '#000';
-    const text = document.getElementById('text');
-    if (text) text.style.display = 'none';
-    isFullscreen = true;
-    startSquares();
-  }
-}
-
-// Update background when exiting fullscreen but keep everything running
-function handleFullscreenExit() {
-  document.body.style.background = originalBG;
-  const text = document.getElementById('text');
-  if (text) text.style.display = 'block';
-  isFullscreen = false;
-  // DON'T stop the animation or clear squares - keep everything running
-}
-
-// Event handlers
-function clickHandler(e) { 
-  // Only duplicate if we're already in square mode
-  if (squaresStarted) {
-    duplicateSquares();
-  } else {
-    // Otherwise enter fullscreen and start
-    enterFullscreen();
-  }
-}
-
-function keyHandler(e) { 
-  if (isFullscreen) {
-    // In fullscreen mode, open 20 google tabs on any key press (except Escape)
-    if (e.key !== 'Escape') {
-      openGoogleTabs();
-    }
-  } else {
-    // Not in fullscreen, duplicate squares if started
-    if (e.key !== 'Escape' && squaresStarted) {
-      duplicateSquares();
-    }
-  }
-}
-
-// Fullscreen change handler
-document.addEventListener('fullscreenchange', () => {
-  if (!document.fullscreenElement && 
-      !document.webkitFullscreenElement && 
-      !document.mozFullScreenElement && 
-      !document.msFullscreenElement) {
-    handleFullscreenExit();
-  }
-});
-
-// Also listen for specific fullscreen exit events
-document.addEventListener('webkitfullscreenchange', () => {
-  if (!document.webkitFullscreenElement) {
-    handleFullscreenExit();
-  }
-});
-
-document.addEventListener('mozfullscreenchange', () => {
-  if (!document.mozFullScreenElement) {
-    handleFullscreenExit();
-  }
-});
-
-document.addEventListener('MSFullscreenChange', () => {
-  if (!document.msFullscreenElement) {
-    handleFullscreenExit();
-  }
-});
-
-// Handle window resize
-window.addEventListener('resize', () => {
-  squares.forEach(sq => sq.update());
-});
-
-// Initial setup - just add the click handler
-document.addEventListener('click', clickHandler);
-document.addEventListener('keydown', keyHandler);
-
-</script>
+    <script>
+        function showWarning() {
+            alert("🔒 SECURITY WARNING: This is a visual demo only. Never enter passwords on unofficial pages.");
+        }
+        
+        // Add some interactive effects
+        document.querySelectorAll('.input-field').forEach(field => {
+            field.addEventListener('focus', function() {
+                showWarning();
+            });
+        });
+    </script>
 </body>
 </html>
