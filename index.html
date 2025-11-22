@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox - Login</title>
+    <title>Add Account - Roblox</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #00A2FF 0%, #8C52FF 100%);
+            background: #f7f7f7;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -23,238 +23,165 @@
 
         .login-container {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            width: 420px;
+            border-radius: 8px;
+            width: 380px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
 
         .header {
             background: white;
-            padding: 32px 40px 24px;
-            text-align: center;
-            border-bottom: 1px solid #E8E8E8;
+            padding: 24px;
+            border-bottom: 1px solid #e6e6e6;
         }
 
-        .roblox-logo {
-            width: 158px;
-            height: 50px;
-            background: linear-gradient(135deg, #00A2FF 0%, #8C52FF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 32px;
-            font-weight: 900;
-            margin: 0 auto;
-            letter-spacing: -0.5px;
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1c1c1c;
+            text-align: center;
         }
 
         .login-form {
-            padding: 32px 40px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #1C1C1C;
-            margin-bottom: 8px;
+            padding: 24px;
         }
 
         .input-field {
             width: 100%;
             padding: 12px 16px;
-            border: 2px solid #E8E8E8;
-            border-radius: 6px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
             font-size: 16px;
-            transition: all 0.2s ease;
+            margin-bottom: 16px;
             background: white;
         }
 
         .input-field:focus {
             outline: none;
-            border-color: #00A2FF;
-            box-shadow: 0 0 0 3px rgba(0, 162, 255, 0.1);
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .checkbox {
-            width: 18px;
-            height: 18px;
-            margin-right: 8px;
-            accent-color: #00A2FF;
-        }
-
-        .checkbox-label {
-            font-size: 14px;
-            color: #1C1C1C;
+            border-color: #4285f4;
         }
 
         .login-button {
             width: 100%;
-            background: linear-gradient(135deg, #00A2FF 0%, #8C52FF 100%);
+            background: #4285f4;
             color: white;
             border: none;
-            padding: 14px 20px;
-            border-radius: 6px;
+            padding: 12px 20px;
+            border-radius: 4px;
             font-size: 16px;
             font-weight: 600;
             cursor: not-allowed;
-            transition: all 0.2s ease;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
-        .login-button:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
+        .forgot-link {
+            color: #4285f4;
+            text-decoration: none;
+            font-size: 14px;
+            text-align: center;
+            display: block;
+            margin-bottom: 24px;
         }
 
         .divider {
-            text-align: center;
-            position: relative;
-            margin: 24px 0;
-            color: #767676;
-            font-size: 14px;
-        }
-
-        .divider::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
             height: 1px;
-            background: #E8E8E8;
+            background: #e6e6e6;
+            margin: 24px 0;
         }
 
-        .divider span {
-            background: white;
-            padding: 0 16px;
-            position: relative;
-        }
-
-        .signup-button {
+        .option-button {
             width: 100%;
             background: white;
-            color: #00A2FF;
-            border: 2px solid #E8E8E8;
+            color: #1c1c1c;
+            border: 1px solid #cccccc;
             padding: 12px 20px;
-            border-radius: 6px;
+            border-radius: 4px;
             font-size: 16px;
-            font-weight: 600;
+            margin-bottom: 12px;
             cursor: not-allowed;
-            transition: all 0.2s ease;
+            text-align: left;
         }
 
-        .signup-button:hover {
-            border-color: #00A2FF;
+        .signup-section {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e6e6e6;
+        }
+
+        .signup-text {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .signup-link {
+            color: #4285f4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
         }
 
         .footer {
-            padding: 20px 40px;
-            background: #F8F8F8;
-            border-top: 1px solid #E8E8E8;
+            background: #f0f0f0;
+            padding: 20px;
             text-align: center;
+            border-top: 1px solid #e6e6e6;
         }
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 12px;
-        }
-
-        .footer-link {
-            color: #767676;
-            text-decoration: none;
-            font-size: 12px;
-        }
-
-        .footer-link:hover {
-            color: #00A2FF;
-        }
-
-        .disclaimer {
-            color: #FF4444;
-            font-size: 11px;
-            font-weight: 600;
-            margin-top: 8px;
-        }
-
-        .forgot-password {
-            color: #00A2FF;
-            text-decoration: none;
+        .brand {
+            color: #666;
             font-size: 14px;
-            float: right;
+            font-weight: 600;
         }
 
-        .forgot-password:hover {
-            text-decoration: underline;
+        .security-notice {
+            color: #ff4444;
+            font-size: 11px;
+            margin-top: 8px;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="header">
-            <div class="roblox-logo">ROBLOX</div>
+            <div class="title">Add Account</div>
         </div>
         
         <div class="login-form">
-            <div class="input-group">
-                <label class="input-label">Username or Email</label>
-                <input type="text" class="input-field" placeholder="Enter your username or email" disabled>
+            <input type="text" class="input-field" placeholder="Username/Email/Phone" disabled>
+            <input type="password" class="input-field" placeholder="Password" disabled>
+            
+            <button class="login-button" onclick="showWarning()">Log in</button>
+            
+            <a href="#" class="forgot-link" onclick="showWarning()">Forgot Password or Username?</a>
+            
+            <div class="divider"></div>
+            
+            <button class="option-button" onclick="showWarning()">Email Me a One-Time Code</button>
+            <button class="option-button" onclick="showWarning()">Use Another Device</button>
+            
+            <div class="signup-section">
+                <div class="signup-text">Don't have an account?</div>
+                <a href="#" class="signup-link" onclick="showWarning()">Sign Up</a>
             </div>
-            
-            <div class="input-group">
-                <label class="input-label">Password</label>
-                <input type="password" class="input-field" placeholder="Enter your password" disabled>
-                <a href="#" class="forgot-password">Forgot password?</a>
-            </div>
-            
-            <div class="checkbox-group">
-                <input type="checkbox" class="checkbox" id="remember" disabled>
-                <label for="remember" class="checkbox-label">Remember me</label>
-            </div>
-            
-            <button class="login-button" onclick="showWarning()">Log In</button>
-            
-            <div class="divider">
-                <span>or</span>
-            </div>
-            
-            <button class="signup-button" onclick="showWarning()">Sign Up</button>
         </div>
         
         <div class="footer">
-            <div class="footer-links">
-                <a href="#" class="footer-link">About Us</a>
-                <a href="#" class="footer-link">Jobs</a>
-                <a href="#" class="footer-link">Parents</a>
-                <a href="#" class="footer-link">Gift Cards</a>
-                <a href="#" class="footer-link">Help</a>
-            </div>
-            <div class="disclaimer">⚠️ SECURITY NOTICE: This is an educational demo. Do not enter real credentials.</div>
+            <div class="brand">DUTMATE</div>
+            <div class="security-notice">⚠️ DEMO ONLY - NOT A REAL LOGIN</div>
         </div>
     </div>
 
     <script>
         function showWarning() {
-            alert("🔒 SECURITY WARNING: This is a visual demo only. Never enter passwords on unofficial pages.");
+            alert("SECURITY: This is a demo page. Do not enter real credentials anywhere.");
         }
         
-        // Add some interactive effects
-        document.querySelectorAll('.input-field').forEach(field => {
-            field.addEventListener('focus', function() {
-                showWarning();
-            });
+        // Prevent any form submission
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', showWarning);
         });
     </script>
 </body>
