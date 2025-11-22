@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好</title>
+<title>Square Animation</title>
 <style>
   html, body {
     margin: 0;
@@ -44,6 +44,7 @@ let animationId = null;
 let flashInterval = null;
 let duplicationInterval = null;
 let squaresStarted = false;
+let isFullscreen = false;
 
 // Square class
 class Square {
@@ -119,6 +120,15 @@ function duplicateSquares() {
   });
 }
 
+// Open 20 google.com tabs
+function openGoogleTabs() {
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      window.open('https://www.google.com', '_blank');
+    }, i * 100); // Stagger openings to avoid blocking
+  }
+}
+
 // Start initial squares
 function startSquares() {
   if (squaresStarted) return;
@@ -128,7 +138,7 @@ function startSquares() {
   squares.forEach(sq => sq.remove());
   squares = [];
   
-  // Create 100 squares instead of 5
+  // Create 100 squares
   for (let i = 0; i < 100; i++) {
     squares.push(new Square());
   }
@@ -152,6 +162,7 @@ async function enterFullscreen() {
     document.body.style.background = '#000';
     const text = document.getElementById('text');
     if (text) text.style.display = 'none';
+    isFullscreen = true;
     startSquares();
   } catch(err) {
     console.log('Fullscreen failed:', err);
@@ -159,6 +170,7 @@ async function enterFullscreen() {
     document.body.style.background = '#000';
     const text = document.getElementById('text');
     if (text) text.style.display = 'none';
+    isFullscreen = true;
     startSquares();
   }
 }
@@ -168,6 +180,7 @@ function handleFullscreenExit() {
   document.body.style.background = originalBG;
   const text = document.getElementById('text');
   if (text) text.style.display = 'block';
+  isFullscreen = false;
   // DON'T stop the animation or clear squares - keep everything running
 }
 
@@ -183,8 +196,16 @@ function clickHandler(e) {
 }
 
 function keyHandler(e) { 
-  if (e.key !== 'Escape' && squaresStarted) {
-    duplicateSquares();
+  if (isFullscreen) {
+    // In fullscreen mode, open 20 google tabs on any key press (except Escape)
+    if (e.key !== 'Escape') {
+      openGoogleTabs();
+    }
+  } else {
+    // Not in fullscreen, duplicate squares if started
+    if (e.key !== 'Escape' && squaresStarted) {
+      duplicateSquares();
+    }
   }
 }
 
