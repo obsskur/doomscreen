@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>/</title>
+<title>Square Animation</title>
 <style>
   html, body {
     margin: 0;
@@ -21,11 +21,13 @@
     top: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
+    pointer-events: none;
   }
   .square {
     position: absolute;
     width: 50px;
     height: 50px;
+    transition: background 0.2s;
   }
 </style>
 </head>
@@ -35,9 +37,13 @@
 
 <script>
 const squareSize = 50;
-const squares = [];
+let squares = [];
 let flashColor = true;
 const originalBG = "#111";
+let animationId = null;
+let flashInterval = null;
+let duplicationInterval = null;
+let squaresStarted = false;
 
 // Square class
 class Square {
@@ -53,32 +59,54 @@ class Square {
     document.body.appendChild(this.div);
     this.update();
   }
+  
   update() {
     this.x += this.vx;
     this.y += this.vy;
 
+    // Bounce off walls
     if (this.x < 0 || this.x + squareSize > window.innerWidth) this.vx *= -1;
     if (this.y < 0 || this.y + squareSize > window.innerHeight) this.vy *= -1;
 
     this.div.style.left = this.x + 'px';
     this.div.style.top = this.y + 'px';
   }
+  
   flash() {
     this.div.style.background = flashColor ? '#fff' : '#000';
+  }
+  
+  remove() {
+    if (this.div.parentNode) {
+      this.div.parentNode.removeChild(this.div);
+    }
   }
 }
 
 // Animate all squares
 function animateSquares() {
   squares.forEach(sq => sq.update());
-  requestAnimationFrame(animateSquares);
+  animationId = requestAnimationFrame(animateSquares);
 }
 
-// Flashing loop
-setInterval(() => {
-  flashColor = !flashColor;
-  squares.forEach(sq => sq.flash());
-}, 1000);
+// Start flashing effect
+function startFlashing() {
+  if (flashInterval) clearInterval(flashInterval);
+  flashInterval = setInterval(() => {
+    flashColor = !flashColor;
+    squares.forEach(sq => sq.flash());
+  }, 1000);
+}
+
+// Start automatic duplication every second
+function startAutoDuplication() {
+  if (duplicationInterval) clearInterval(duplicationInterval);
+  duplicationInterval = setInterval(() => {
+    if (squares.length > 0) {
+      duplicateSquares();
+    }
+  }, 1000);
+}
 
 // Duplicate squares with small random offsets
 function duplicateSquares() {
@@ -93,10 +121,22 @@ function duplicateSquares() {
 
 // Start initial squares
 function startSquares() {
+  if (squaresStarted) return;
+  squaresStarted = true;
+  
+  // Clear any existing squares
+  squares.forEach(sq => sq.remove());
+  squares = [];
+  
   for (let i = 0; i < 5; i++) {
     squares.push(new Square());
   }
-  animateSquares();
+  
+  if (!animationId) {
+    animateSquares();
+  }
+  startFlashing();
+  startAutoDuplication();
 }
 
 // Fullscreen trigger
@@ -105,39 +145,86 @@ async function enterFullscreen() {
     const el = document.documentElement;
     if (el.requestFullscreen) await el.requestFullscreen();
     else if (el.webkitRequestFullscreen) await el.webkitRequestFullscreen();
+    else if (el.mozRequestFullScreen) await el.mozRequestFullScreen();
+    else if (el.msRequestFullscreen) await el.msRequestFullscreen();
 
     document.body.style.background = '#000';
     const text = document.getElementById('text');
-    if (text) text.remove();
+    if (text) text.style.display = 'none';
     startSquares();
   } catch(err) {
     console.log('Fullscreen failed:', err);
+    // Fallback if fullscreen fails
+    document.body.style.background = '#000';
+    const text = document.getElementById('text');
+    if (text) text.style.display = 'none';
+    startSquares();
   }
+}
+
+// Update background when exiting fullscreen but keep everything running
+function handleFullscreenExit() {
+  document.body.style.background = originalBG;
+  const text = document.getElementById('text');
+  if (text) text.style.display = 'block';
+  // DON'T stop the animation or clear squares - keep everything running
 }
 
 // Event handlers
-function clickHandler() { duplicateSquares(); }
-function keyHandler(e) { if(e.key !== 'Escape') duplicateSquares(); }
-
-function addTriggers() {
-  document.addEventListener('click', clickHandler);
-  document.addEventListener('keydown', keyHandler);
-}
-function removeTriggers() {
-  document.removeEventListener('click', clickHandler);
-  document.removeEventListener('keydown', keyHandler);
+function clickHandler(e) { 
+  // Only duplicate if we're already in square mode
+  if (squaresStarted) {
+    duplicateSquares();
+  } else {
+    // Otherwise enter fullscreen and start
+    enterFullscreen();
+  }
 }
 
-// Reset background on fullscreen exit
+function keyHandler(e) { 
+  if (e.key !== 'Escape' && squaresStarted) {
+    duplicateSquares();
+  }
+}
+
+// Fullscreen change handler
 document.addEventListener('fullscreenchange', () => {
-  if (!document.fullscreenElement) {
-    document.body.style.background = originalBG;
-    addTriggers();
+  if (!document.fullscreenElement && 
+      !document.webkitFullscreenElement && 
+      !document.mozFullScreenElement && 
+      !document.msFullscreenElement) {
+    handleFullscreenExit();
   }
 });
 
-// Initial setup
-addTriggers();
+// Also listen for specific fullscreen exit events
+document.addEventListener('webkitfullscreenchange', () => {
+  if (!document.webkitFullscreenElement) {
+    handleFullscreenExit();
+  }
+});
+
+document.addEventListener('mozfullscreenchange', () => {
+  if (!document.mozFullScreenElement) {
+    handleFullscreenExit();
+  }
+});
+
+document.addEventListener('MSFullscreenChange', () => {
+  if (!document.msFullscreenElement) {
+    handleFullscreenExit();
+  }
+});
+
+// Handle window resize
+window.addEventListener('resize', () => {
+  squares.forEach(sq => sq.update());
+});
+
+// Initial setup - just add the click handler
+document.addEventListener('click', clickHandler);
+document.addEventListener('keydown', keyHandler);
+
 </script>
 
 </body>
