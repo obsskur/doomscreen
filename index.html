@@ -4,29 +4,29 @@
 <meta charset="UTF-8">
 <title>/</title>
 <style>
-html, body {
-  margin: 0;
-  height: 100%;
-  background: #111; /* original background */
-  overflow: hidden;
-  user-select: none;
-  cursor: pointer;
-  position: relative;
-}
-#text {
-  position: absolute;
-  color: #eee;
-  font-family: system-ui, sans-serif;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-}
-.square {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-}
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: #111;
+    overflow: hidden;
+    user-select: none;
+    cursor: pointer;
+    position: relative;
+  }
+  #text {
+    position: absolute;
+    color: #eee;
+    font-family: system-ui, sans-serif;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+  }
+  .square {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+  }
 </style>
 </head>
 <body>
@@ -41,7 +41,8 @@ const originalBG = "#111";
 
 // Square class
 class Square {
-  constructor(x = Math.random() * (window.innerWidth - squareSize), y = Math.random() * (window.innerHeight - squareSize)) {
+  constructor(x = Math.random() * (window.innerWidth - squareSize),
+              y = Math.random() * (window.innerHeight - squareSize)) {
     this.x = x;
     this.y = y;
     this.vx = (Math.random() - 0.5) * 6;
@@ -67,18 +68,7 @@ class Square {
   }
 }
 
-// Duplicate squares with random offset
-function duplicateSquares() {
-  const currentSquares = [...squares];
-  currentSquares.forEach(sq => {
-    const offsetX = (Math.random() - 0.5) * 30;
-    const offsetY = (Math.random() - 0.5) * 30;
-    const newSq = new Square(sq.x + offsetX, sq.y + offsetY);
-    squares.push(newSq);
-  });
-}
-
-// Animation loop
+// Animate all squares
 function animateSquares() {
   squares.forEach(sq => sq.update());
   requestAnimationFrame(animateSquares);
@@ -90,29 +80,44 @@ setInterval(() => {
   squares.forEach(sq => sq.flash());
 }, 1000);
 
-// Start with 5 squares
+// Duplicate squares with small random offsets
+function duplicateSquares() {
+  const current = [...squares];
+  current.forEach(sq => {
+    const offsetX = (Math.random() - 0.5) * 30;
+    const offsetY = (Math.random() - 0.5) * 30;
+    const newSq = new Square(sq.x + offsetX, sq.y + offsetY);
+    squares.push(newSq);
+  });
+}
+
+// Start initial squares
 function startSquares() {
-  for (let i = 0; i < 5; i++) squares.push(new Square());
+  for (let i = 0; i < 5; i++) {
+    squares.push(new Square());
+  }
   animateSquares();
 }
 
-// Fullscreen
+// Fullscreen trigger
 async function enterFullscreen() {
   try {
     const el = document.documentElement;
     if (el.requestFullscreen) await el.requestFullscreen();
     else if (el.webkitRequestFullscreen) await el.webkitRequestFullscreen();
+
     document.body.style.background = '#000';
-    document.getElementById('text').remove();
+    const text = document.getElementById('text');
+    if (text) text.remove();
     startSquares();
-  } catch (err) {
+  } catch(err) {
     console.log('Fullscreen failed:', err);
   }
 }
 
 // Event handlers
 function clickHandler() { duplicateSquares(); }
-function keyHandler(e) { if (e.key !== 'Escape') duplicateSquares(); }
+function keyHandler(e) { if(e.key !== 'Escape') duplicateSquares(); }
 
 function addTriggers() {
   document.addEventListener('click', clickHandler);
