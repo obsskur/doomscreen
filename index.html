@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Account - Gaming Platform</title>
+    <title>Roblox - Add Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -18,61 +19,156 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
             overflow: hidden;
         }
 
-        .background-collage {
+        /* Floating Orbs Background */
+        .orbs-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.9)),
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231a1a2e"/><circle cx="20" cy="20" r="15" fill="%23362a84"/><circle cx="80" cy="30" r="12" fill="%23e94560"/><rect x="60" y="60" width="25" height="25" fill="%230f3460"/><polygon points="30,80 50,80 40,60" fill="%23f8b500"/></svg>');
-            background-size: cover;
-            filter: blur(8px) grayscale(30%);
             z-index: -1;
         }
 
-        .game-icons {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.15;
-            z-index: -1;
-        }
-
-        .icon {
+        .orb {
             position: absolute;
-            font-size: 80px;
-            color: #ffffff;
-            opacity: 0.3;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.7;
+            animation: float 15s infinite linear;
         }
 
-        .icon:nth-child(1) { top: 10%; left: 5%; }
-        .icon:nth-child(2) { top: 15%; right: 10%; }
-        .icon:nth-child(3) { bottom: 20%; left: 15%; }
-        .icon:nth-child(4) { bottom: 10%; right: 5%; }
-        .icon:nth-child(5) { top: 40%; left: 8%; }
-        .icon:nth-child(6) { top: 60%; right: 12%; }
+        .orb:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #ff6b6b, transparent);
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
 
+        .orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #4ecdc4, transparent);
+            top: 60%;
+            left: 80%;
+            animation-delay: -5s;
+        }
+
+        .orb:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, #45b7d1, transparent);
+            top: 20%;
+            left: 70%;
+            animation-delay: -10s;
+        }
+
+        .orb:nth-child(4) {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, #96ceb4, transparent);
+            top: 70%;
+            left: 10%;
+            animation-delay: -7s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(20px, 30px) rotate(90deg);
+            }
+            50% {
+                transform: translate(-10px, 50px) rotate(180deg);
+            }
+            75% {
+                transform: translate(30px, -20px) rotate(270deg);
+            }
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 1s ease;
+        }
+
+        .loading-text {
+            color: #fff;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4285f4;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            } 40% {
+                transform: scale(1);
+            }
+        }
+
+        .get-started-text {
+            color: #fff;
+            font-size: 28px;
+            font-weight: 500;
+            text-align: center;
+            opacity: 0;
+            position: absolute;
+            transition: opacity 1s ease;
+        }
+
+        /* Login Container */
         .login-container {
             background: #1e1e1e;
             border-radius: 16px;
-            width: 40%;
-            min-width: 400px;
-            max-width: 500px;
-            height: 60%;
-            min-height: 600px;
+            width: 420px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             display: flex;
             flex-direction: column;
             border: 1px solid #333;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.8s ease;
+            filter: grayscale(1);
+        }
+
+        .login-container.active {
+            transform: scale(1);
+            opacity: 1;
+            filter: grayscale(0);
         }
 
         .header {
@@ -132,6 +228,23 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .login-button:hover::before {
+            left: 100%;
         }
 
         .login-button:hover {
@@ -172,11 +285,44 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .option-button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
         }
 
         .option-button:hover {
             background: #333;
             border-color: #555;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
         }
 
         .signup-section {
@@ -197,11 +343,29 @@
             font-size: 15px;
             font-weight: 600;
             transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .signup-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: #5d7bdb;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
+        }
+
+        .signup-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
         }
 
         .signup-link:hover {
             color: #7d9beb;
-            text-decoration: underline;
         }
 
         .security-notice {
@@ -217,32 +381,36 @@
             .login-container {
                 width: 90%;
                 min-width: unset;
-                height: auto;
-                min-height: 550px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="background-collage"></div>
-    
-    <div class="game-icons">
-        <div class="icon">🎮</div>
-        <div class="icon">👾</div>
-        <div class="icon">🦖</div>
-        <div class="icon">🧽</div>
-        <div class="icon">⚔️</div>
-        <div class="icon">🏆</div>
+    <div class="orbs-container">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
     </div>
 
-    <div class="login-container">
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-text" id="loadingText">Loading Roblox..</div>
+        <div class="loading-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="get-started-text" id="getStartedText">Before you get started..</div>
+    </div>
+
+    <div class="login-container" id="loginContainer">
         <div class="header">
             <div class="title">Add Account</div>
         </div>
         
         <div class="login-form">
             <div class="input-group">
-                <input type="text" class="input-field" placeholder="Username/Email/Phone">
+                <input type="text" class="input-field" placeholder="Username">
             </div>
             
             <div class="input-group">
@@ -256,7 +424,6 @@
             <div class="divider"></div>
             
             <button class="option-button">Email Me a One-Time Code</button>
-            <button class="option-button">Use Another Device</button>
             
             <div class="signup-section">
                 <div class="signup-text">Don't have an account?</div>
@@ -267,24 +434,58 @@
     </div>
 
     <script>
-        // Add some interactive effects
-        document.querySelectorAll('.input-field').forEach(field => {
-            field.addEventListener('focus', function() {
-                this.style.backgroundColor = '#323232';
+        // Loading sequence
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const loadingText = document.getElementById('loadingText');
+            const getStartedText = document.getElementById('getStartedText');
+            const loginContainer = document.getElementById('loginContainer');
+            
+            // Sequence of loading animations
+            setTimeout(() => {
+                // Fade out "Loading Roblox.."
+                loadingText.style.opacity = '0';
+                
+                // Fade in "Before you get started.."
+                setTimeout(() => {
+                    getStartedText.style.opacity = '1';
+                }, 500);
+                
+                // After 5 seconds, fade out loading screen and show login
+                setTimeout(() => {
+                    loadingScreen.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                        loginContainer.classList.add('active');
+                    }, 1000);
+                }, 5000);
+            }, 2000);
+            
+            // Add interactive effects to input fields
+            document.querySelectorAll('.input-field').forEach(field => {
+                field.addEventListener('focus', function() {
+                    this.style.backgroundColor = '#323232';
+                });
+                
+                field.addEventListener('blur', function() {
+                    this.style.backgroundColor = '#2a2a2a';
+                });
             });
             
-            field.addEventListener('blur', function() {
-                this.style.backgroundColor = '#2a2a2a';
-            });
-        });
-        
-        // Add click effects to buttons
-        document.querySelectorAll('button').forEach(button => {
-            button.addEventListener('click', function() {
-                this.style.transform = 'scale(0.98)';
-                setTimeout(() => {
+            // Add click effects to buttons
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('mousedown', function() {
+                    this.style.transform = 'scale(0.98)';
+                });
+                
+                button.addEventListener('mouseup', function() {
                     this.style.transform = '';
-                }, 150);
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                });
             });
         });
     </script>
